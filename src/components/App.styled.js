@@ -57,6 +57,10 @@ export const Btn = styled.button`
     background-color: aqua;
   }
 `;
+export const Container = styled.div`
+  max-width: 1200px;
+  margin: 0 auto;
+`;
 // export const FilterInput = styled.input`
 //   width: 250px;
 //   height: 25px;

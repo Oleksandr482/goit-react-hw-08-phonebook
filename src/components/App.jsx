@@ -1,30 +1,41 @@
-import { useEffect } from 'react';
+import { Header } from './Header/Header';
+import { Register } from 'pages/Register';
+import { Login } from 'pages/Login';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { Contacts } from 'pages/Contacts';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchContacts } from 'redux/contacts/operations';
-import { selectError, selectIsLoading } from 'redux/contacts/selectors';
-import { ContactsForm } from './ContactsForm/ContactsForm';
-import { ContactsList } from './ContactsList/ContactsList';
-import { Filter } from './Filter/Filter';
+import { useEffect } from 'react';
+import { fetchCurrentUser } from 'redux/auth/auth-operations';
+// import { PrivateRoute } from './PrivateRoute';
+import { selectIsLoggedIn } from 'redux/auth/auth-selectors';
 
 export const App = () => {
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const error = useSelector(selectError);
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(fetchCurrentUser());
   }, [dispatch]);
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
 
   return (
     <>
-      <h1>Phonebook</h1>
-      <ContactsForm />
-      <div>
-        <h2>Contacts</h2>
-        <Filter />
-        {isLoading && !error && <b>Request in progress...</b>}
-        <ContactsList />
-      </div>
+      <Routes>
+        <Route path="/" element={<Header />}>
+          <Route
+            index
+            element={isLoggedIn ? <Contacts /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/register"
+            element={isLoggedIn ? <Navigate to="/" /> : <Register />}
+          />
+          <Route
+            path="/login"
+            element={isLoggedIn ? <Navigate to="/" /> : <Login />}
+          />
+        </Route>
+      </Routes>
     </>
   );
 };
