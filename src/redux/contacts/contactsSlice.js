@@ -28,41 +28,38 @@ const handleFulfilled = state => {
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: initialContactsState,
-  extraReducers: {
-    [fetchContacts.pending]: handlePending,
-    [fetchContacts.fulfilled](state, action) {
-      handleFulfilled(state);
-      state.items = action.payload;
-    },
-    [fetchContacts.rejected]: handleError,
-
-    [addContact.pending]: handlePending,
-    [addContact.fulfilled](state, action) {
-      handleFulfilled(state);
-      state.items.push(action.payload);
-    },
-    [addContact.rejected]: handleError,
-
-    [deleteContact.pending]: handlePending,
-    [deleteContact.fulfilled](state, action) {
-      handleFulfilled(state);
-      const index = state.items.findIndex(
-        task => task.id === action.payload.id
-      );
-      state.items.splice(index, 1);
-    },
-    [deleteContact.rejected]: handleError,
-
-    [editContact.pending]: handlePending,
-    [editContact.fulfilled](state, action) {
-      handleFulfilled(state);
-      const index = state.items.findIndex(
-        task => task.id === action.payload.id
-      );
-      state.items.splice(index, 1, action.payload);
-    },
-    [editContact.rejected]: handleError,
-  },
+  extraReducers: builder =>
+    builder
+      .addCase(fetchContacts.pending, handlePending)
+      .addCase(fetchContacts.fulfilled, (state, action) => {
+        handleFulfilled(state);
+        state.items = action.payload;
+      })
+      .addCase(fetchContacts.rejected, handleError)
+      .addCase(addContact.pending, handlePending)
+      .addCase(addContact.fulfilled, (state, action) => {
+        handleFulfilled(state);
+        state.items.push(action.payload);
+      })
+      .addCase(addContact.rejected, handleError)
+      .addCase(deleteContact.pending, handlePending)
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        handleFulfilled(state);
+        const index = state.items.findIndex(
+          task => task.id === action.payload.id
+        );
+        state.items.splice(index, 1);
+      })
+      .addCase(deleteContact.rejected, handleError)
+      .addCase(editContact.pending, handlePending)
+      .addCase(editContact.fulfilled, (state, action) => {
+        handleFulfilled(state);
+        const index = state.items.findIndex(
+          task => task.id === action.payload.id
+        );
+        state.items.splice(index, 1, action.payload);
+      })
+      .addCase(editContact.rejected, handleError),
 });
 
 export const contactsReducer = contactsSlice.reducer;

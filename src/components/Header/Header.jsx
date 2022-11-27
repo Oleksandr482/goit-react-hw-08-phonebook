@@ -1,10 +1,5 @@
 import { Box, Container, Flex, Heading, useDisclosure } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons';
-import { AuthNav } from 'components/AuthNav/AuthNav';
-import { UserMenu } from 'components/UserMenu/UserMenu';
-import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { selectIsLoggedIn } from 'redux/auth/auth-selectors';
 import {
   Modal,
   ModalOverlay,
@@ -15,15 +10,14 @@ import {
 } from '@chakra-ui/react';
 import { ContactsForm } from 'components/ContactsForm/ContactsForm';
 import { TbPhoneCall } from 'react-icons/tb';
-import { IconBtn } from 'components/IconButton/IconButton';
+import { Navigation } from 'components/Navigation/Navigation';
 
 export const Header = () => {
-  const isLoggedIn = useSelector(selectIsLoggedIn);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
-      <Container maxW="100%" h="80px" py="10px" bg="green.100">
+      <Container as="header" maxW="100%" h="80px" py="10px" bg="green.100">
         <Box maxW="1260px" mx="auto">
           <Flex justifyContent="space-between">
             <Heading as="h1" size="2xl" color="blue.500">
@@ -32,14 +26,14 @@ export const Header = () => {
                 Phonebook
               </Flex>
             </Heading>
-
-            {isLoggedIn ? <IconBtn onClick={onOpen} Icon={AddIcon} /> : ''}
-
-            {isLoggedIn ? <UserMenu /> : <AuthNav />}
+            {/* Navigation */}
+            <Navigation onOpen={onOpen} />
+            {/* ////////////////////////////// */}
           </Flex>
         </Box>
       </Container>
       <Outlet />
+      {/* /////////////Modal//////////////// */}
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent maxW="max-content">

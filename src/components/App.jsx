@@ -1,13 +1,13 @@
 import { Header } from './Header/Header';
 import { Register } from 'pages/Register';
 import { Login } from 'pages/Login';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { Contacts } from 'pages/Contacts';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchCurrentUser } from 'redux/auth/auth-operations';
-// import { PrivateRoute } from './PrivateRoute';
-import { selectIsLoggedIn } from 'redux/auth/auth-selectors';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
 
 export const App = () => {
   const dispatch = useDispatch();
@@ -16,23 +16,23 @@ export const App = () => {
     dispatch(fetchCurrentUser());
   }, [dispatch]);
 
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-
   return (
     <>
       <Routes>
         <Route path="/" element={<Header />}>
           <Route
             index
-            element={isLoggedIn ? <Contacts /> : <Navigate to="/login" />}
+            element={
+              <PrivateRoute redirectTo="/login" component={<Contacts />} />
+            }
           />
           <Route
             path="/register"
-            element={isLoggedIn ? <Navigate to="/" /> : <Register />}
+            element={<RestrictedRoute component={<Register />} />}
           />
           <Route
             path="/login"
-            element={isLoggedIn ? <Navigate to="/" /> : <Login />}
+            element={<RestrictedRoute component={<Login />} />}
           />
         </Route>
       </Routes>

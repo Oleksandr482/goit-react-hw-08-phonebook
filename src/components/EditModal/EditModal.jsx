@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   Modal,
   ModalOverlay,
@@ -99,4 +100,12 @@ export const EditModal = ({ isOpen, onClose, userName, userNumber, id }) => {
       </ModalContent>
     </Modal>
   );
+};
+
+EditModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  userName: PropTypes.string.isRequired,
+  userNumber: PropTypes.string.isRequired,
+  id: PropTypes.string.isRequired,
 };
