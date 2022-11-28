@@ -36,10 +36,9 @@ export const authSlice = createSlice({
         state.isLoggedIn = true;
         state.isRefreshing = false;
       })
-      .addCase(
-        fetchCurrentUser.rejected,
-        state => (state.isRefreshing = false)
-      ),
+      .addCase(fetchCurrentUser.rejected, state => {
+        state.isRefreshing = false;
+      }),
 });
 
 export const authReducer = authSlice.reducer;
