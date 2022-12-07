@@ -45,6 +45,7 @@ export const EditModal = ({ isOpen, onClose, userName, userNumber, id }) => {
         return item.name === normalName;
       })
     ) {
+      setUserName(userName);
       return alert(`${normalName} is already in contacts`);
     } else {
       dispatch(editContact({ id, name: normalName, number }));
