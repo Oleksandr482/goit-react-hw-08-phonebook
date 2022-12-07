@@ -11,14 +11,16 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { editContact } from 'redux/contacts/operations';
+import { selectContacts } from 'redux/contacts/selectors';
 
 export const EditModal = ({ isOpen, onClose, userName, userNumber, id }) => {
   const [name, setUserName] = useState(userName);
   const [number, setUserNumber] = useState(userNumber);
 
   const dispatch = useDispatch();
+  const contacts = useSelector(selectContacts);
 
   const onChange = e => {
     switch (e.target.name) {
@@ -33,8 +35,20 @@ export const EditModal = ({ isOpen, onClose, userName, userNumber, id }) => {
 
   const formSubmit = e => {
     e.preventDefault();
+    const normalName = name
+      .split(' ')
+      .filter(el => el.trim())
+      .join(' ');
 
-    dispatch(editContact({ id, name, number }));
+    if (
+      contacts.find(item => {
+        return item.name === normalName;
+      })
+    ) {
+      return alert(`${normalName} is already in contacts`);
+    } else {
+      dispatch(editContact({ id, name: normalName, number }));
+    }
 
     onClose();
   };
