@@ -27,15 +27,21 @@ export const ContactsForm = ({ onClose }) => {
   const formSubmit = e => {
     e.preventDefault();
 
+    const normalName = name
+      .split(' ')
+      .filter(el => el.trim())
+      .join(' ');
+
     if (
       contacts.find(item => {
-        return item.name === name;
+        return item.name === normalName;
       })
     ) {
-      return alert(`${name} is already in contacts`);
+      return alert(`${normalName} is already in contacts`);
     } else {
-      dispatch(addContact({ name, number }));
+      dispatch(addContact({ name: normalName, number }));
     }
+
     onClose();
     setName('');
     setNumber('');
